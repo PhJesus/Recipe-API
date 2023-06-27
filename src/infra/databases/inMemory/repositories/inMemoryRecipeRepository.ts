@@ -1,4 +1,4 @@
-import { Recipe } from "../models/Recipe";
+import { Recipe } from "../../../../domain/recipe";
 
 export class InMemoryRecipeRepository {
   public data: Recipe[];
