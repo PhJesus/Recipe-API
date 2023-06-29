@@ -5,7 +5,7 @@ import * as path from 'path'
 let first = true
 let titles = []
 
-fs.createReadStream(path.join(__dirname, '../tmp/epi_r.csv'))
+fs.createReadStream(path.join(__dirname, '../../tmp/epi_r.csv'))
   .pipe(csv.parse({ delimiter: ',', from_line: 1}))
   .on("data", function (row: any) {
     if (first) {

@@ -4,4 +4,5 @@ export interface IRecipeRepository {
   getAllRecipes(): Promise<Recipe[] | []>;
   insertRecipe(recipe: Recipe): Promise<void>;
   getRecipeById(id: Number): Promise<Recipe | null>;
+  insertManyRecipes(recipe: Recipe): Promise<void>;
 }
