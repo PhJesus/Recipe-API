@@ -1,13 +1,15 @@
-import { MongoClient, MongoClientOptions, ServerApiVersion } from "mongodb";
+import { Collection, Db, MongoClient, MongoClientOptions, ServerApiVersion } from "mongodb";
 import { IRecipeRepository } from "../../../application/repositories/recipeRepository";
-import { Recipe } from "../../../domain/recipe";
+import { Recipe, TRecipe } from "../../../domain/recipe";
 
 const uri = "mongodb+srv://mongo:vhyOpdNivWASKrXX@cluster0.roluhax.mongodb.net/?retryWrites=true&w=majority";
 
 export class MongoDBRecipeRepository implements IRecipeRepository {
   public client: MongoClient
+  public database: Db
+  public collection: Collection;
 
-  constructor(options: MongoClientOptions) {
+  constructor(options?: MongoClientOptions) {
     this.client = new MongoClient(uri, {
       serverApi: {
         version: ServerApiVersion.v1,
@@ -16,11 +18,16 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
       }
       //TODO - Trocar pra options aqui ^
     });
+
+    this.database = this.client.db('RecipeAPI');
+    this.collection = this.database.collection('Recipes')
   }
 
   async insertRecipe(recipe: Recipe): Promise<void> {
     try {
       await this.client.connect();
+      
+      
 
     }
     catch {
@@ -32,13 +39,16 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
     
   }
 
-  async insertManyRecipes(recipe: Recipe): Promise<void> {
+  async insertManyRecipes(recipe: TRecipe[]): Promise<void> {
     try {
       await this.client.connect();
 
-    }
-    catch {
+      const insertManyResult = await this.collection.insertMany(recipe);
+      console.log(`${insertManyResult.insertedCount} inserted`);
 
+    }
+    catch (err) {
+      console.error(err)
     }
     finally {
       await this.client.close();

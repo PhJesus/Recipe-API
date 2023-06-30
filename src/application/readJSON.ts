@@ -1,23 +1,35 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { Recipe, TRecipe } from '../domain/recipe';
+import { MongoDBRecipeRepository } from '../infra/databases/mongodb/mongodbRecipeRepository'
 
-let obj = JSON.parse(fs.readFileSync(path.join(__dirname, '../../tmp/full_format_recipes.json'), 'utf8'))
 
-console.log(obj[1]);
+const mongodb = new MongoDBRecipeRepository();
 
-const recipeObj: TRecipe = {
-  title: obj[1].title,
-  desc: obj[1].desc,
-  ingredients: obj[1].ingredients,
-  categories: obj[1].categories,
-  directions: obj[1].directions,
-  fat: obj[1].fat,
-  calories: obj[1].calories,
-  protein: obj[1].protein,
-  sodium: obj[1].sodium,
-  rating: obj[1].rating
+async function insertIntoArr() {
+  let obj = await JSON.parse(fs.readFileSync(path.join(__dirname, '../../tmp/full_format_recipes.json'), 'utf8'))
+  let recipeArr: TRecipe[] = [];
+
+  for (let i = 0; i < obj.length; i++) {
+    let recipe = {
+      title: obj[i].title,
+      desc: obj[i].desc,
+      ingredients: obj[i].ingredients,
+      categories: obj[i].categories,
+      directions: obj[i].directions,
+      fat: obj[i].fat,
+      calories: obj[i].calories,
+      protein: obj[i].protein,
+      sodium: obj[i].sodium,
+      rating: obj[i].rating
+    }
+    
+    recipeArr.push(recipe)
+  }
+
+  console.log(recipeArr)
+
+  //await mongodb.insertManyRecipes(recipeArr)
 }
 
-const recipe = new Recipe(recipeObj);
-
+insertIntoArr()
