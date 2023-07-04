@@ -11,6 +11,7 @@ export type TRecipe = {
   protein: Number,
   sodium: Number,
   rating: Number,
+  date: Date
 }
 
 export class Recipe {

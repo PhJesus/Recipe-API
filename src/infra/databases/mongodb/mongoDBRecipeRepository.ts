@@ -45,7 +45,7 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
 
       const insertManyResult = await this.collection.insertMany(recipe);
       console.log(`${insertManyResult.insertedCount} inserted`);
-
+      process.exit();
     }
     catch (err) {
       console.error(err)
@@ -59,6 +59,15 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
   async getAllRecipes(): Promise<Recipe[] | []> {
     try {
       await this.client.connect();
+      const page = 1;
+      const limit = 25;
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+      const cursor = this.collection.find().sort({ date: -1 }).skip(startIndex).limit(limit);
+      //TODO - Test pagination later.
+      await cursor.forEach(recipe => {
+        console.log(recipe);
+      })
       return
     }
     catch {
@@ -69,7 +78,7 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
     }
   }
   
-  async getRecipeById(id: Number): Promise<Recipe | null> {
+  async getRecipeByParameter(id: Number): Promise<Recipe | null> {
     try {
       await this.client.connect();
       return
