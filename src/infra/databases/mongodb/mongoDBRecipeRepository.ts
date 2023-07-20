@@ -1,4 +1,4 @@
-import { Collection, Db, MongoClient, MongoClientOptions, ServerApiVersion } from "mongodb";
+import { Collection, Db, MongoClient, MongoClientOptions, ObjectId, ServerApiVersion } from "mongodb";
 import { IRecipeRepository } from "../../../application/repositories/recipeRepository";
 import { Recipe, TRecipe } from "../../../domain/recipe";
 
@@ -53,38 +53,40 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
     finally {
       await this.client.close();
     }
-    
   }
 
-  async getAllRecipes(): Promise<Recipe[] | []> {
+  async getAllRecipes(qtdPage: number, currPage: number): Promise<Recipe[] | []> {
     try {
       await this.client.connect();
-      const page = 1;
       const limit = 25;
-      const startIndex = (page - 1) * limit;
-      const endIndex = page * limit;
-      const cursor = this.collection.find().sort({ date: -1 }).skip(startIndex).limit(limit);
+      const cursor = this.collection.find().sort({ date: -1 }).skip(qtdPage * currPage).limit(qtdPage);
+      let recipeArr: Recipe[] = [];
       //TODO - Test pagination later.
-      await cursor.forEach(recipe => {
-        console.log(recipe);
-      })
-      return
+      await cursor.forEach((recipe: Recipe) => {
+        recipeArr.push(recipe);
+      });
+      return recipeArr;
     }
-    catch {
-
+    catch (error) {
+      console.error(error.message);
     }
     finally {
       await this.client.close();
     }
   }
   
-  async getRecipeByParameter(id: Number): Promise<Recipe | null> {
+  async getRecipeByParameter(id: ObjectId): Promise<Recipe | null> {
     try {
       await this.client.connect();
-      return
-    }
-    catch {
 
+      const cursor = await this.collection.findOne({ _id: id });
+
+      const recipe: Recipe = <Recipe>cursor;
+
+      return recipe;
+    }
+    catch (error) {
+      console.error(error.message);
     }
     finally {
       await this.client.close();

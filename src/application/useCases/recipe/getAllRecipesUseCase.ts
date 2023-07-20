@@ -6,8 +6,8 @@ export class GetAllRecipes {
     private recipeRepository: IRecipeRepository
   ) {}
 
-  async execute(): Promise<Recipe[] | []> {
+  async execute(qtdPage: number, currPage: number): Promise<Recipe[] | []> {
     // code
-    return this.recipeRepository.getAllRecipes();
+    return this.recipeRepository.getAllRecipes(qtdPage, currPage);
   }
 }
