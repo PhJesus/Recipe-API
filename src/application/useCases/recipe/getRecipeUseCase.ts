@@ -8,7 +8,6 @@ export class GetRecipeById {
   ) {}
 
   async execute(id: ObjectId): Promise<Recipe | null> {
-    // code
     return this.recipeRepository.getRecipeByParameter(id);
   }
 }

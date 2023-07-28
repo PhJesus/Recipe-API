@@ -1,4 +1,4 @@
-import { Recipe } from "../../../domain/recipe";
+import { Recipe, TRecipe } from "../../../domain/recipe";
 import { IRecipeRepository } from "../../repositories/recipeRepository";
 
 export class CreateRecipe {
@@ -6,9 +6,8 @@ export class CreateRecipe {
     private recipeRepository: IRecipeRepository
   ) {}
 
-  async execute(recipe: Recipe): Promise<void> {
+  async execute(recipe: TRecipe): Promise<void> {
     // Validação ...
-
     await this.recipeRepository.insertRecipe(recipe);
   }
 }

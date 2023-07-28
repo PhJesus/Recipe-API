@@ -23,15 +23,21 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
     this.collection = this.database.collection('Recipes')
   }
 
-  async insertRecipe(recipe: Recipe): Promise<void> {
+  async updateRecipe(id: Number | ObjectId, recipe: TRecipe): Promise<Recipe> {
+    throw new Error("Method not implemented.");
+  }
+
+  async insertRecipe(recipe: TRecipe): Promise<void> {
     try {
       await this.client.connect();
       
+      const insertResult = await this.collection.insertOne(recipe);
+      console.log(insertResult);
       
-
+      return;
     }
-    catch {
-
+    catch (err) {
+      console.error(err);
     }
     finally {
       await this.client.close();
@@ -45,10 +51,10 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
 
       const insertManyResult = await this.collection.insertMany(recipe);
       console.log(`${insertManyResult.insertedCount} inserted`);
-      process.exit();
+      process.exit(); // TODO - Fixdis
     }
     catch (err) {
-      console.error(err)
+      console.error(err);
     }
     finally {
       await this.client.close();
@@ -58,7 +64,6 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
   async getAllRecipes(qtdPage: number, currPage: number): Promise<Recipe[] | []> {
     try {
       await this.client.connect();
-      const limit = 25;
       const cursor = this.collection.find().sort({ date: -1 }).skip(qtdPage * currPage).limit(qtdPage);
       let recipeArr: Recipe[] = [];
       //TODO - Test pagination later.
