@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { Recipe, TRecipe } from './domain/recipe';
-import { MongoDBRecipeRepository } from './infra/databases/mongodb/mongodbRecipeRepository'
+import { Recipe, TRecipe } from './modules/recipes/entities/Recipes';
+import { MongoDBRecipeRepository } from './modules/recipes/infra/mongodb/entities/RecipeRepository'
 
 const mongodb = new MongoDBRecipeRepository();
 

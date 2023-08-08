@@ -1,8 +1,8 @@
 import { ObjectId } from "mongodb";
-import { Recipe } from "../../../modules/recipes/entities/Recipes";
-import { IRecipeRepository } from "../../repositories/recipeRepository";
+import { Recipe } from "../../entities/Recipes";
+import { IRecipeRepository } from "../../infra/mongodb/repositories/IRecipeRepository";
 
-export class GetRecipeById {
+export class GetRecipeByIdService {
   constructor(
     private recipeRepository: IRecipeRepository
   ) {}

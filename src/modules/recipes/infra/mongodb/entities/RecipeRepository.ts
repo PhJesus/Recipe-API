@@ -1,10 +1,10 @@
 import { Collection, Db, MongoClient, MongoClientOptions, ObjectId, ServerApiVersion } from "mongodb";
-import { IRecipeRepository } from "../../../application/repositories/recipeRepository";
-import { Recipe, TRecipe } from "../../../domain/recipe";
+import { IRecipeRepository } from "../../../../../application/repositories/recipeRepository";
+import { Recipe, TRecipe } from "../../../entities/Recipes";
 
 const uri = "mongodb+srv://mongo:vhyOpdNivWASKrXX@cluster0.roluhax.mongodb.net/?retryWrites=true&w=majority";
 
-export class MongoDBRecipeRepository implements IRecipeRepository {
+export class RecipeRepository implements IRecipeRepository {
   public client: MongoClient
   public database: Db
   public collection: Collection;
@@ -20,7 +20,7 @@ export class MongoDBRecipeRepository implements IRecipeRepository {
     });
 
     this.database = this.client.db('RecipeAPI');
-    this.collection = this.database.collection('Recipes')
+    this.collection = this.database.collection('Recipes');
   }
 
   async updateRecipe(id: Number | ObjectId, recipe: TRecipe): Promise<Recipe> {

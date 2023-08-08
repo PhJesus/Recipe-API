@@ -1,4 +1,4 @@
-import { Recipe, TRecipe } from "../../../domain/recipe";
+import { Recipe, TRecipe } from "../../../modules/recipes/entities/Recipes";
 import { IRecipeRepository } from "../../repositories/recipeRepository";
 
 export class CreateRecipe {

@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { GetAllRecipes } from "../../../../application/useCases/recipe/getAllRecipesUseCase";
 import { GetRecipeById } from '../../../../application/useCases/recipe/getRecipeUseCase';
 import { CreateRecipe } from '../../../../application/useCases/recipe/createRecipeUseCase';
-import { MongoDBRecipeRepository } from "../../../databases/mongodb/mongodbRecipeRepository";
+import { RecipeRepository } from "../../../../modules/recipes/infra//entities/RecipeRepository";
 
 const router = Router()
 
@@ -17,10 +17,10 @@ router.get('/recipes', async (req: Request, res: Response) => {
   const currPage = req.query.currPage;
   const qtdPage = req.query.qtdPage;
 
-  const mongoDBRecipeRepository = new MongoDBRecipeRepository();
+  const RecipeRepository = new RecipeRepository();
 
   const getAllRecipesUseCase = new GetAllRecipes(
-    mongoDBRecipeRepository
+    RecipeRepository
   );
 
   const recipes = await getAllRecipesUseCase.execute(Number(qtdPage), Number(currPage));
@@ -33,10 +33,10 @@ router.get('/recipe/:id', async (req: Request, res: Response) => {
   const id = req.params.id;
   const objId = new ObjectId(id);
 
-  const mongoDBRecipeRepository = new MongoDBRecipeRepository();
+  const RecipeRepository = new RecipeRepository();
 
   const getRecipeById = new GetRecipeById(
-    mongoDBRecipeRepository
+    RecipeRepository
   );
 
   const recipe = await getRecipeById.execute(objId);
