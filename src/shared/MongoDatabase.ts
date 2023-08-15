@@ -35,10 +35,36 @@ export class MongoDatabase {
     try {
       let collection = this.db.collection<T>(table);
       let filter: any = { _id: id }; //! had to use any here because theres an error with Filter<T> and i can't solve it =C
-      return collection.findOne<T>(filter);
+      return collection.findOne(filter);
     } catch (error) {
       console.error(error.message);
       return;
     }
   }
+
+  public async LoadRecordsByFilter<T>(table: string, filter: any): Promise<Array<T>> { //! Change the any from the filter
+    try {
+      let collection = this.db.collection<T>(table);
+      if (filter === null) 
+        return await collection.find().toArray();
+      return await collection.find(filter).toArray();
+    } catch (error) {
+      console.error(error.message);
+      return;
+    }
+  }
+
+  public async LoadAllRecordsWithPagination<T>(table: string, currPage: number, qtPages: number): Promise<Array<T>> {
+    try {
+      let collection = this.db.collection<T>(table);
+      return await collection.find().toArray();
+    } catch (error) {
+      console.error(error.message);
+      return;
+    }
+  }
+  //TODO - Put pagination here :)
+  
+
+
 }
