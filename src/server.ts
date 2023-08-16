@@ -1,9 +1,19 @@
-import { ExpressRepository } from "./infra/http/express/expressRepository"
 import http from 'http'
+import express from "express";
+import env from './config/env.config';
 
-const APP_PORT = Number(process.env.APP_PORT) || 5000
+class App {
+  private port: string = env.APP_PORT;
+  private app: express.Application;
 
-const expressRepository = new ExpressRepository()
+  constructor() {
+    this.app = express();
+  }
 
-const server = http.createServer(expressRepository.app)
-server.listen(APP_PORT, () => console.log(`${new Date(Date.now()).toLocaleString()} - HTTP Server is running on port ${APP_PORT} `));
+  public listen() {
+    const server = http.createServer(this.app)
+    server.listen(this.port, () => console.log(`${new Date(Date.now()).toLocaleString()} - HTTP Server is running on port ${this.port} `));
+  }
+}
+
+const app = new App().listen();
