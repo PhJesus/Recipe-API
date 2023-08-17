@@ -1,6 +1,7 @@
 import http from 'http'
 import express from "express";
 import env from './config/env.config';
+import { ExpressRecipeRepository } from './modules/recipes/infra/http/entities/ExpressRecipeRepository';
 
 class App {
   private port: string = env.APP_PORT;
@@ -8,6 +9,7 @@ class App {
 
   constructor() {
     this.app = express();
+    this.app.use('/recipes', new ExpressRecipeRepository().router)
   }
 
   public listen() {

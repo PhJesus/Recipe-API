@@ -13,10 +13,6 @@ export class RecipeRepository implements IRecipeRepository {
     this.database = new MongoDatabase("RecipeAPI", connectionString);
   }
 
-  async updateRecipe(id: ObjectId, recipe: TRecipe): Promise<Recipe> {
-    throw new Error("Method not implemented.");
-  }
-
   async insertRecipe(recipe: TRecipe): Promise<void> {
     this.database.InsertRecord("Recipes", recipe);
   }

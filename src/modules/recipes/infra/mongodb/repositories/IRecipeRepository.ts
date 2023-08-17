@@ -9,6 +9,4 @@ export interface IRecipeRepository {
   getRecipeById(id: Number | ObjectId): Promise<Recipe | null>;
 
   insertManyRecipes(recipe: TRecipe[]): Promise<void>;
-  
-  updateRecipe(id: Number | ObjectId, recipe: TRecipe): Promise<Recipe>;
 }

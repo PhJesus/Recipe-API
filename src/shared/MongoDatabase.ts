@@ -67,6 +67,7 @@ export class MongoDatabase {
     // ? Since getting all 20k+ results take a while, i added pagination.
     try {
       await this.client.connect();
+      console.log('pao')
       let collection = this.db.collection<T>(table);
       return await collection.find().skip(qtPages * currPage).limit(qtPages).toArray();
     } catch (error) {

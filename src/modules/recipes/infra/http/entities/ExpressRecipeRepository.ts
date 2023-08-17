@@ -4,12 +4,15 @@ import { RecipeRepository } from "../../mongodb/entities/RecipeRepository";
 import { ObjectId } from "mongodb";
 
 export class ExpressRecipeRepository implements IHttpRecipeRepository {
-  public recipeRouter: Router;
+  public router: Router = Router();
   private recipeRepository: RecipeRepository;
 
   constructor() {
-    this.recipeRouter = Router();
     this.recipeRepository = new RecipeRepository();
+
+    this.router.get('/', this.GetRecipeByPagination);
+    this.router.get('/:id', this.GetRecipeById);
+    this.router.post('/', this.PostRecipe);
   }
 
   async GetRecipeById(req: Request, res: Response): Promise<Response> {
@@ -22,9 +25,12 @@ export class ExpressRecipeRepository implements IHttpRecipeRepository {
   }
   
   async GetRecipeByPagination(req: Request, res: Response): Promise<Response> {
-    const { qtPages, currPage } = req.params;
+    const { qtPages, currPage } = req.query;
+    if (qtPages === undefined || currPage === undefined) return res.status(400).json();
 
-    const recipes = await this.recipeRepository.getRecipeByPagination(Number(currPage), Number(qtPages));
+    const a = new RecipeRepository()
+    const recipes = await a.getRecipeByPagination(Number(currPage), Number(qtPages));
+    //const recipes = await this.recipeRepository.getRecipeByPagination(Number(currPage), Number(qtPages));
     
     return res.status(200).json(recipes);
   }
@@ -34,11 +40,5 @@ export class ExpressRecipeRepository implements IHttpRecipeRepository {
     await this.recipeRepository.insertRecipe(recipeobj);
     
     return res.status(201);
-  }
-  async PutRecipe(req: Request, res: Response): Promise<Response> {
-    throw new Error("Method not implemented.");
-  }
-  async DeleteRecipe(req: Request, res: Response): Promise<Response> {
-    throw new Error("Method not implemented.");
   }
 }
