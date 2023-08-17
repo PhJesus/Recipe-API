@@ -6,7 +6,7 @@
     "forceConsistentCasingInFileNames": false,
     "strict": false,
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "server/src",
     "skipLibCheck": true
   }
 }
